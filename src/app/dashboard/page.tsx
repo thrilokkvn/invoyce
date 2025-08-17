@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { signOut } from "@/config/auth";
 import { requireUser } from "@/hooks/requireUser"
 
 export default async function Dashboard() {
@@ -5,6 +7,12 @@ export default async function Dashboard() {
     return (
         <div>
             Hello from dashboard page
+            <Button className="cursor-pointer" onClick={async() => {
+                "use server"
+                await signOut();
+            }}>
+                Sign out
+            </Button>
         </div>
     )
 }
