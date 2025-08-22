@@ -1,13 +1,17 @@
+import { checkUser } from "@/actions/check-user";
 import { DashboardLinks } from "@/components/dashboard-links";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { signOut } from "@/config/auth";
 import { requireUser } from "@/hooks/requireUser";
 import { FileText, MenuIcon, User2, Users2 } from "lucide-react";
 import Link from "next/link";
+import { ReactNode } from "react";
 
-export default async function DashboardLayout() {
+export default async function DashboardLayout({children}: {children: ReactNode}) {
     const session = await requireUser();
+    const data = await checkUser(session.user?.id as string)
 
     return (
         <>
@@ -59,10 +63,23 @@ export default async function DashboardLayout() {
                                     <DropdownMenuItem asChild>
                                         <Link href={"/dashboard/invoices"}>Invoices</Link>
                                     </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem asChild>
+                                        <form className="w-full" action={async() => {
+                                            "use server"
+                                            await signOut();
+                                        }}>
+                                            <button className="w-full text-left cursor-pointer text-red-400 font-semibold">Logout</button>
+                                        </form>
+                                    </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
                     </header>
+
+                    <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+                        {children}
+                    </main>
                 </div>
             </div>
         </>
