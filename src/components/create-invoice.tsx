@@ -75,8 +75,12 @@ export default function CreateInvoice() {
         const amount = ((Number(rate) || 0) * (Number(quantity) || 0));
         return formatCurrency(amount, currency)
     }
-    const calculateTotalAmount = fields.items.getFieldList().reduce((acc, item) => {
-        return acc + Number(item.getFieldset().amount.value || 0)
+    const calculateTotalAmount = fields.items.getFieldList().reduce((acc, itemField) => {
+        const item = itemField.getFieldset();
+        const rate = Number(item.rate.value) || 0;
+        const quantity = Number(item.quantity.value) || 0;
+
+        return acc + (rate * quantity);
     }, 0)
 
     console.log(form)
@@ -272,7 +276,7 @@ export default function CreateInvoice() {
                                             <div className="text-sm font-medium mb-2">
                                                 Item Number: {index + 1}
                                             </div>
-                                            {fields.items.getFieldList().length > 1 && <Button type="button" variant={"ghost"} size={"sm"}
+                                            {fields.items.getFieldList().length > 1 && <Button variant={"ghost"} size={"sm"}
                                                 className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer"
                                                 {...form.remove.getButtonProps({
                                                     name: fields.items.name,
@@ -299,7 +303,7 @@ export default function CreateInvoice() {
                                             </div>
                                             <div className="col-span-2 space-y-2">
                                                 <Label>Amount (in {fields.currency.value})</Label>
-                                                <Input type="string" name={item.getFieldset().amount.name} value={calculateAmount(item.getFieldset().quantity.initialValue || "", item.getFieldset().rate.initialValue || "")} key={item.getFieldset().amount.key} className="border-none" placeholder="$100" step={0.01} disabled />
+                                                <Input type="string" name={item.getFieldset().amount.name} defaultValue={calculateAmount(item.getFieldset().quantity.value || "1", item.getFieldset().rate.value || "0")} key={item.getFieldset().amount.key} className="border-none" placeholder="$100" step={0.01} disabled />
                                                 <p className="text-red-500 text-sm">{item.getFieldset().amount.errors}</p>
                                             </div>
                                         </div>
