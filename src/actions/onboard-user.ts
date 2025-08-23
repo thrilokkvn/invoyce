@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/config/prisma";
-import { requireUser } from "@/hooks/requireUser";
+import { requireUser } from "@/hooks/require-user";
 import { onboardUserSchema } from "@/schema/onboard-user-schema";
 import { parseWithZod } from "@conform-to/zod";
 import { redirect } from "next/navigation";

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { signOut } from "@/config/auth";
-import { requireUser } from "@/hooks/requireUser";
+import { requireUser } from "@/hooks/require-user";
 import { FileText, MenuIcon, User2, Users2 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";

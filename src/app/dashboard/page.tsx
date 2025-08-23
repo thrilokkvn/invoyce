@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/config/auth";
-import { requireUser } from "@/hooks/requireUser"
+import { requireUser } from "@/hooks/require-user"
 
 export default async function Dashboard() {
     const session = await requireUser();
