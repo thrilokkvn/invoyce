@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Calendar } from "./ui/calendar";
 import { useActionState, useState } from "react";
 import { createInvoice } from "@/actions/create-invoice";
-import { useForm } from "@conform-to/react";
+import { useForm, getFormProps } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { invoiceSchema } from "@/schema/invoice-schema";
 import { Separator } from "./ui/separator";
@@ -24,6 +24,7 @@ export default function CreateInvoice() {
     const [form, fields] = useForm({
         lastResult,
         onValidate({ formData }) {
+            console.log("Form data: ", formData)
             return parseWithZod(formData, { schema: invoiceSchema })
         },
         shouldValidate: "onBlur",
@@ -31,10 +32,9 @@ export default function CreateInvoice() {
         defaultValue: {
             invoiceName: "",
             invoiceNumber: "",
-            invoiceDate: new Date().toISOString().split("T")[0],
+            invoiceDate: "",
             dueDate: "",
             currency: "INR",
-            status: "PENDING",
 
             from: {
                 fromName: "",
@@ -55,19 +55,16 @@ export default function CreateInvoice() {
             },
 
             items: [
-                { description: "", quantity: 1, rate: 0, amount: 0 }
+                {itemNumber: 1, description: "", quantity: 1, rate: 0, amount: 0 }
             ],
 
             totalAmount: 0,
             note: "",
-
-            createdAt: new Date().toISOString().split("T")[0],
-            updatedAt: new Date().toISOString().split("T")[0]
         }
     });
 
-    const [selectedDate, setSelectedDate] = useState<Date | undefined>();
-    const [dueDate, setDueDate] = useState<Date | undefined>();
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(fields.invoiceDate.initialValue ? new Date(fields.invoiceDate.initialValue) : undefined);
+    const [dueDate, setDueDate] = useState<Date | undefined>(fields.dueDate.initialValue ? new Date(fields.dueDate.initialValue) : undefined);
 
     const [currency, setCurrency] = useState(fields.currency.initialValue ?? "");
 
@@ -81,9 +78,9 @@ export default function CreateInvoice() {
         const quantity = Number(item.quantity.value) || 0;
 
         return acc + (rate * quantity);
-    }, 0)
+    }, 0);
 
-    console.log(form)
+    const formatDate = (date?: Date) => date ? date.toLocaleDateString("en-CA") : "";
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -92,7 +89,7 @@ export default function CreateInvoice() {
         <div>
             <h2 className="text-2xl font-bold">Create Your Invoice</h2>
             <Card className="mt-4">
-                <form className="space-y-3" id={form.id} onSubmit={form.onSubmit} action={action} noValidate>
+                <form className="space-y-3" {...getFormProps(form)} action={action} noValidate>
                     <CardHeader>
                         <div className="flex gap-3">
                             <Badge variant={"outline"}>Draft</Badge>
@@ -146,15 +143,15 @@ export default function CreateInvoice() {
                                 <Label>Invoice Date</Label>
                                 <Popover>
                                     <PopoverTrigger className="w-full" asChild>
-                                        <Button variant={"outline"} className="w-full">
+                                        <Button type="button" variant={"outline"} className="w-full">
                                             <CalendarIcon /> {selectedDate ? selectedDate.toLocaleDateString() : "Pick a Date"}
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent>
-                                        <Calendar mode={"single"} selected={selectedDate} onSelect={(date) => setSelectedDate(date || new Date())} disabled={(date) => date < today} />
+                                        <Calendar mode={"single"} selected={selectedDate} onSelect={(date) => setSelectedDate(date ?? undefined)} disabled={(date) => date < today} />
                                     </PopoverContent>
                                 </Popover>
-                                <input type="hidden" name={fields.invoiceDate.name} value={selectedDate?.toLocaleDateString()}/>
+                                <input type="hidden" name={fields.invoiceDate.name} value={formatDate(selectedDate)}/>
                                 <p className="text-red-500 text-sm">{fields.invoiceDate.errors}</p>
                             </div>
 
@@ -162,15 +159,15 @@ export default function CreateInvoice() {
                                 <Label>Due Date</Label>
                                 <Popover>
                                     <PopoverTrigger className="w-full" asChild>
-                                        <Button variant={"outline"} className="w-full">
+                                        <Button type="button" variant={"outline"} className="w-full">
                                             <CalendarIcon /> {dueDate ? dueDate.toLocaleDateString() : "Pick a Date"}
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent>
-                                        <Calendar mode={"single"} selected={dueDate} onSelect={(date) => setDueDate(date || new Date())} disabled={(date) => date < today} />
+                                        <Calendar mode={"single"} selected={dueDate} onSelect={(date) => setDueDate(date ?? undefined)} disabled={(date) => date < (selectedDate ?? today)} />
                                     </PopoverContent>
                                 </Popover>
-                                <input type="hidden" name={fields.dueDate.name} value={dueDate?.toLocaleDateString()}/>
+                                <input type="hidden" name={fields.dueDate.name} value={formatDate(dueDate)}/>
                                 <p className="text-red-500 text-sm">{fields.dueDate.errors}</p>
                             </div>
                         </div>
@@ -253,7 +250,7 @@ export default function CreateInvoice() {
                         <div className="mt-3">
                             <div className="flex justify-between items-center space-y-2">
                                 <h2 className="font-bold mt-4">Item Details</h2>
-                                <Button className="cursor-pointer" variant={"outline"}
+                                <Button type="button" className="cursor-pointer" variant={"outline"}
                                     {...form.insert.getButtonProps({
                                         name: fields.items.name,
                                         defaultValue: {
@@ -275,8 +272,9 @@ export default function CreateInvoice() {
                                         <div className="flex items-center justify-between my-3">
                                             <div className="text-sm font-medium mb-2">
                                                 Item Number: {index + 1}
+                                                <input type="hidden" name={item.getFieldset().itemNumber.name} value={index + 1} key={item.getFieldset().itemNumber.key}/>
                                             </div>
-                                            {fields.items.getFieldList().length > 1 && <Button variant={"ghost"} size={"sm"}
+                                            {fields.items.getFieldList().length > 1 && <Button type="button" variant={"ghost"} size={"sm"}
                                                 className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer"
                                                 {...form.remove.getButtonProps({
                                                     name: fields.items.name,
@@ -303,7 +301,8 @@ export default function CreateInvoice() {
                                             </div>
                                             <div className="col-span-2 space-y-2">
                                                 <Label>Amount (in {fields.currency.value})</Label>
-                                                <Input type="string" name={item.getFieldset().amount.name} defaultValue={calculateAmount(item.getFieldset().quantity.value || "1", item.getFieldset().rate.value || "0")} key={item.getFieldset().amount.key} className="border-none" placeholder="$100" step={0.01} disabled />
+                                                <Input type="string" value={calculateAmount(item.getFieldset().quantity.value || "1", item.getFieldset().rate.value || "0")} key={item.getFieldset().amount.key} className="border-none" placeholder="$100" step={0.01} readOnly />
+                                                <input type="hidden" name={item.getFieldset().amount.name} value={Number(item.getFieldset().quantity.value || "1") * Number(item.getFieldset().rate.value || "0")}/>
                                                 <p className="text-red-500 text-sm">{item.getFieldset().amount.errors}</p>
                                             </div>
                                         </div>
@@ -320,7 +319,7 @@ export default function CreateInvoice() {
 
                     <div className="space-y-2 px-5">
                         <Label>Additional Notes (Optional)</Label>
-                        <Textarea id={fields.note.id} defaultValue={fields.note.initialValue} key={fields.note.key}/>
+                        <Textarea id={fields.note.id} name={fields.note.name} defaultValue={fields.note.initialValue} key={fields.note.key}/>
                         <p className="text-red-500 text-sm">{fields.note.errors}</p>
                     </div>
 

@@ -94,7 +94,7 @@ model Invoice {
   invoiceDate   DateTime
   dueDate       DateTime
   currency      String
-  status        InvoiceStatus
+  status        InvoiceStatus @default(PENDING)
 
   fromName         String
   fromEmail        String
