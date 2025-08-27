@@ -89,7 +89,7 @@ export default function CreateInvoice() {
         <div>
             <h2 className="text-2xl font-bold">Create Your Invoice</h2>
             <Card className="mt-4">
-                <form className="space-y-3" {...getFormProps(form)} action={action} noValidate>
+                <form className="space-y-3" id={form.id} onSubmit={form.onSubmit} action={action} noValidate>
                     <CardHeader>
                         <div className="flex gap-3">
                             <Badge variant={"outline"}>Draft</Badge>
@@ -250,7 +250,7 @@ export default function CreateInvoice() {
                         <div className="mt-3">
                             <div className="flex justify-between items-center space-y-2">
                                 <h2 className="font-bold mt-4">Item Details</h2>
-                                <Button type="button" className="cursor-pointer" variant={"outline"}
+                                <Button className="cursor-pointer" variant={"outline"}
                                     {...form.insert.getButtonProps({
                                         name: fields.items.name,
                                         defaultValue: {
@@ -274,7 +274,7 @@ export default function CreateInvoice() {
                                                 Item Number: {index + 1}
                                                 <input type="hidden" name={item.getFieldset().itemNumber.name} value={index + 1} key={item.getFieldset().itemNumber.key}/>
                                             </div>
-                                            {fields.items.getFieldList().length > 1 && <Button type="button" variant={"ghost"} size={"sm"}
+                                            {fields.items.getFieldList().length > 1 && <Button variant={"ghost"} size={"sm"}
                                                 className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer"
                                                 {...form.remove.getButtonProps({
                                                     name: fields.items.name,

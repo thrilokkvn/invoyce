@@ -1,11 +1,16 @@
+import { getInvoices } from "@/actions/get-invoices";
 import InvoiceActions from "@/components/invoice-actions";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { StatusBadge } from "@/components/status-badge";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import formatCurrency from "@/hooks/format-currency";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 
-export default function Invoices() {
+export default async function Invoices() {
+    const invoiceData = await getInvoices();
+
     return (
         <Card>
             <CardHeader className="flex justify-between items-center">
@@ -30,14 +35,16 @@ export default function Invoices() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow>
-                            <TableCell>#1</TableCell>
-                            <TableCell>John Doe</TableCell>
-                            <TableCell>$1000</TableCell>
-                            <TableCell>Paid</TableCell>
-                            <TableCell>01-01-2025</TableCell>
-                            <TableCell className="text-right"><InvoiceActions /></TableCell>
-                        </TableRow>
+                        {invoiceData.map(eachInvoice => (
+                            <TableRow key={eachInvoice.id}>
+                                <TableCell>INV-{eachInvoice.invoiceNumber}</TableCell>
+                                <TableCell>{eachInvoice.clientName}</TableCell>
+                                <TableCell>{formatCurrency(Number(eachInvoice.totalAmount), eachInvoice.currency)}</TableCell>
+                                <TableCell><StatusBadge text={eachInvoice.status}/></TableCell>
+                                <TableCell>{eachInvoice.createdAt.toLocaleDateString()}</TableCell>
+                                <TableCell className="text-right"><InvoiceActions /></TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
             </CardContent>
