@@ -42,7 +42,7 @@ export default async function Invoices() {
                                 <TableCell>{formatCurrency(Number(eachInvoice.totalAmount), eachInvoice.currency)}</TableCell>
                                 <TableCell><StatusBadge text={eachInvoice.status}/></TableCell>
                                 <TableCell>{eachInvoice.createdAt.toLocaleDateString()}</TableCell>
-                                <TableCell className="text-right"><InvoiceActions /></TableCell>
+                                <TableCell className="text-right"><InvoiceActions invoiceId={eachInvoice.id}/></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

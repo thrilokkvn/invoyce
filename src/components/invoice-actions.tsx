@@ -1,9 +1,8 @@
 import { CheckCircleIcon, DownloadCloud, Edit, Ellipsis, MailIcon, Trash } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
 import Link from "next/link";
 
-export default function InvoiceActions() {
+export default function InvoiceActions({ invoiceId }: {invoiceId : string}) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className="cursor-pointer">
@@ -11,7 +10,7 @@ export default function InvoiceActions() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
-                    <Link href="">
+                    <Link href={`/dashboard/invoices/${invoiceId}`}>
                         <Edit /> Edit Invoice
                     </Link>
                 </DropdownMenuItem>

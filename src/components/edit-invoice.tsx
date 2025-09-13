@@ -18,9 +18,9 @@ import { Separator } from "./ui/separator";
 import { Textarea } from "./ui/textarea";
 import { SubmitButton } from "./submit-button";
 import formatCurrency from "@/hooks/format-currency";
-import { createInvoiceProps } from "@/types/types";
+import { completeInvoiceDataProps } from "@/types/types"
 
-export default function CreateInvoice({firstName, lastName, email, address, city, postalCode, country}: createInvoiceProps) {
+export default function EditInvoice({ invoiceData } : {invoiceData: completeInvoiceDataProps}) {
     const [lastResult, action] = useActionState(createInvoice, undefined);
     const [form, fields] = useForm({
         lastResult,
@@ -31,36 +31,34 @@ export default function CreateInvoice({firstName, lastName, email, address, city
         shouldValidate: "onBlur",
         shouldRevalidate: "onInput",
         defaultValue: {
-            invoiceName: "",
-            invoiceNumber: "",
-            invoiceDate: "",
-            dueDate: "",
-            currency: "INR",
+            invoiceName: invoiceData.invoiceName,
+            invoiceNumber: invoiceData.invoiceNumber,
+            invoiceDate: invoiceData.invoiceDate.toLocaleString(),
+            dueDate: invoiceData.dueDate.toLocaleString(),
+            currency: invoiceData.currency,
 
             from: {
-                fromName: `${firstName} ${lastName}`,
-                fromEmail: email,
-                fromAddress: address,
-                fromCity: city,
-                fromPostalCode: postalCode,
-                fromCountry: country,
+                fromName: invoiceData.fromName,
+                fromEmail: invoiceData.fromEmail,
+                fromAddress: invoiceData.fromAddress,
+                fromCity: invoiceData.fromCity,
+                fromPostalCode: invoiceData.fromPostalCode,
+                fromCountry: invoiceData.fromCountry,
             },
 
             client: {
-                clientName: "",
-                clientEmail: "",
-                clientAddress: "",
-                clientCity: "",
-                clientPostalCode: "",
-                clientCountry: "",
+                clientName: invoiceData.clientName,
+                clientEmail: invoiceData.clientEmail,
+                clientAddress: invoiceData.clientAddress,
+                clientCity: invoiceData.clientCity,
+                clientPostalCode: invoiceData.clientPostalCode,
+                clientCountry: invoiceData.clientCountry,
             },
 
-            items: [
-                {itemNumber: 1, description: "", quantity: 1, rate: 0, amount: 0 }
-            ],
+            items: [...invoiceData.items],
 
-            totalAmount: 0,
-            note: "",
+            totalAmount: invoiceData.totalAmount.toString(),
+            note: invoiceData.note,
         }
     });
 
@@ -88,7 +86,7 @@ export default function CreateInvoice({firstName, lastName, email, address, city
 
     return (
         <div>
-            <h2 className="text-2xl font-bold">Create Your Invoice</h2>
+            <h2 className="text-2xl font-bold">Edit Invoice</h2>
             <Card className="mt-4">
                 <form className="space-y-3" id={form.id} onSubmit={form.onSubmit} action={action} noValidate>
                     <CardHeader>
@@ -325,7 +323,7 @@ export default function CreateInvoice({firstName, lastName, email, address, city
                     </div>
 
                     <div className="flex justify-end px-4 mt-3">
-                        <SubmitButton text="Send Invoice to Client" loadingText="Sending..."/>
+                        <SubmitButton text="Update Invoice" loadingText="Updating..."/>
                     </div>
                 </form>
             </Card>
