@@ -15,7 +15,7 @@ export default function InvoiceActions({ invoiceId }: {invoiceId : string}) {
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link href="">
+                    <Link href={`/api/invoice/${invoiceId}`} target="_blank">
                         <DownloadCloud /> Download Invoice
                     </Link>
                 </DropdownMenuItem>

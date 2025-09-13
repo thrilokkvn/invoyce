@@ -1,6 +1,8 @@
 "use server";
 
+import { emailClient } from "@/config/mailtrap";
 import prisma from "@/config/prisma";
+import formatCurrency from "@/hooks/format-currency";
 import { requireUser } from "@/hooks/require-user";
 import { invoiceSchema } from "@/schema/invoice-schema";
 import { parseWithZod } from "@conform-to/zod";
@@ -59,6 +61,26 @@ export default async function editInvoice(prevState: any, data: FormData) {
                 amount: item.amount,
                 invoiceId: invoice.id
             }))
+        });
+
+        const sender = {
+            email: "hello@demomailtrap.co",
+            name: "Mailtrap Test",
+        };
+
+        emailClient.send({
+            from: sender,
+            to: [{email: process.env.EMAIL_ID!}],
+            template_uuid: process.env.EDIT_TEMPLATE_ID!,
+            template_variables: {
+                "clientName": submission.value.client.clientName,
+                "invoiceNumber": `INV-${submission.value.invoiceNumber}`,
+                "invoiceDate": submission.value.invoiceDate,
+                "dueDate": submission.value.dueDate,
+                "amount": formatCurrency(submission.value.totalAmount, submission.value.currency),
+                "fromName": submission.value.from.fromName,
+                "invoiceLink": `http://localhost:3000/api/invoice/${invoice.id}`
+            }
         });
     });
 
