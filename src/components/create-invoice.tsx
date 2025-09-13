@@ -19,7 +19,17 @@ import { Textarea } from "./ui/textarea";
 import { SubmitButton } from "./submit-button";
 import formatCurrency from "@/hooks/format-currency";
 
-export default function CreateInvoice() {
+interface createInvoiceProps {
+    firstName: string,
+    lastName: string,
+    email: string,
+    address: string,
+    city: string,
+    postalCode: string,
+    country: string
+}
+
+export default function CreateInvoice({firstName, lastName, email, address, city, postalCode, country}: createInvoiceProps) {
     const [lastResult, action] = useActionState(createInvoice, undefined);
     const [form, fields] = useForm({
         lastResult,
@@ -37,12 +47,12 @@ export default function CreateInvoice() {
             currency: "INR",
 
             from: {
-                fromName: "",
-                fromEmail: "",
-                fromAddress: "",
-                fromCity: "",
-                fromPostalCode: "",
-                fromCountry: "",
+                fromName: `${firstName} ${lastName}`,
+                fromEmail: email,
+                fromAddress: address,
+                fromCity: city,
+                fromPostalCode: postalCode,
+                fromCountry: country,
             },
 
             client: {

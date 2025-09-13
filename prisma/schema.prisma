@@ -18,6 +18,9 @@ model User {
   firstName     String?
   lastName      String?
   address       String?
+  city          String?
+  postalCode    String?
+  country       String?
   email         String          @unique
   emailVerified DateTime?
   image         String?

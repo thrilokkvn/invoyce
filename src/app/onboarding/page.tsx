@@ -6,7 +6,6 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -30,7 +29,7 @@ export default function Onboarding() {
 
     return (
         <div className="min-h-screen w-screen flex items-center justify-center">
-            <Card className="w-sm mx-auto">
+            <Card className="w-sm md:w-md mx-auto">
                 <CardHeader>
                     <CardTitle className="text-xl font-bold">
                         You're almost there...
@@ -81,6 +80,24 @@ export default function Onboarding() {
                                 placeholder="221B Baker street"
                             />
                             <p className="text-red-500 text-sm">{fields.address.errors}</p>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-3 mb-2">
+                            <div className="space-y-2">
+                                <Label>City</Label>
+                                <Input name={fields.city.name} defaultValue={fields.city.initialValue} key={fields.city.key} placeholder="Bangalore" />
+                                <p className="text-red-500 text-sm">{fields.city.errors}</p>
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Postal Code</Label>
+                                <Input name={fields.postalCode.name} defaultValue={fields.postalCode.initialValue} key={fields.postalCode.key} placeholder="111111" />
+                                <p className="text-red-500 text-sm">{fields.postalCode.errors}</p>
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Country</Label>
+                                <Input name={fields.country.name} defaultValue={fields.country.initialValue} key={fields.country.key} placeholder="India" />
+                                <p className="text-red-500 text-sm">{fields.country.errors}</p>
+                            </div>
                         </div>
 
                         <SubmitButton

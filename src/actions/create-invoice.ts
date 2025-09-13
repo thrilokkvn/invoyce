@@ -19,6 +19,11 @@ export async function createInvoice(prevState: any, data: FormData) {
 
     const totalAmount = submission.value.items.reduce((acc, item) => acc + item.amount, 0);
 
+    const sender = {
+        email: "hello@demomailtrap.co",
+        name: "Mailtrap Test",
+    };
+
     await prisma.$transaction(async (txn) => {
         const invoice = await txn.invoice.create({
             data: {
@@ -54,26 +59,21 @@ export async function createInvoice(prevState: any, data: FormData) {
                 invoiceId: invoice.id
             }))
         })
-    });
 
-    const sender = {
-        email: "hello@demomailtrap.co",
-        name: "Mailtrap Test",
-    };
-
-    emailClient.send({
-        from: sender,
-        to: [{email: process.env.EMAIL_ID!}],
-        template_uuid: process.env.TEMPLATE_ID!,
-        template_variables: {
-            "clientName": submission.value.client.clientName,
-            "invoiceNumber": `INV-${submission.value.invoiceNumber}`,
-            "invoiceDate": submission.value.invoiceDate,
-            "dueDate": submission.value.dueDate,
-            "amount": formatCurrency(submission.value.totalAmount, submission.value.currency),
-            "fromName": submission.value.from.fromName,
-            "invoiceLink": "Test_Invoicelink"
-        }
+        emailClient.send({
+            from: sender,
+            to: [{email: process.env.EMAIL_ID!}],
+            template_uuid: process.env.TEMPLATE_ID!,
+            template_variables: {
+                "clientName": submission.value.client.clientName,
+                "invoiceNumber": `INV-${submission.value.invoiceNumber}`,
+                "invoiceDate": submission.value.invoiceDate,
+                "dueDate": submission.value.dueDate,
+                "amount": formatCurrency(submission.value.totalAmount, submission.value.currency),
+                "fromName": submission.value.from.fromName,
+                "invoiceLink": `http://localhost:3000/api/invoice/${invoice.id}`
+            }
+        });
     });
 
     return redirect("/dashboard/invoices");
