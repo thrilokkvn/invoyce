@@ -44,18 +44,22 @@ export default async function editInvoice(prevState: any, data: FormData) {
                 totalAmount: totalAmount
         }});
 
-        await txn.invoiceItems.updateMany({
+        await txn.invoiceItems.deleteMany({
             where: {
                 invoiceId: invoice.id
-            },
+            }
+        });
+
+        await txn.invoiceItems.createMany({
             data: submission.value.items.map(item => ({
                 itemNumber: item.itemNumber,
                 description: item.description,
                 quantity: item.quantity,
                 rate: item.rate,
                 amount: item.amount,
+                invoiceId: invoice.id
             }))
-        })
+        });
     });
 
     return redirect("/dashboard/invoices");

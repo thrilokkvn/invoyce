@@ -10,8 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Calendar } from "./ui/calendar";
 import { useActionState, useState } from "react";
-import { createInvoice } from "@/actions/create-invoice";
-import { useForm, getFormProps } from "@conform-to/react";
+import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { invoiceSchema } from "@/schema/invoice-schema";
 import { Separator } from "./ui/separator";
@@ -19,9 +18,15 @@ import { Textarea } from "./ui/textarea";
 import { SubmitButton } from "./submit-button";
 import formatCurrency from "@/hooks/format-currency";
 import { completeInvoiceDataProps } from "@/types/types"
+import editInvoice from "@/actions/edit-invoice";
+import { formatDateForSubmission, safeParseDate } from "@/hooks/parse-date";
 
 export default function EditInvoice({ invoiceData } : {invoiceData: completeInvoiceDataProps}) {
-    const [lastResult, action] = useActionState(createInvoice, undefined);
+    const [lastResult, action] = useActionState(editInvoice, undefined);
+
+    const initialInvoiceDate = safeParseDate(invoiceData.invoiceDate);
+    const initialDueDate = safeParseDate(invoiceData.dueDate);
+
     const [form, fields] = useForm({
         lastResult,
         onValidate({ formData }) {
@@ -33,8 +38,8 @@ export default function EditInvoice({ invoiceData } : {invoiceData: completeInvo
         defaultValue: {
             invoiceName: invoiceData.invoiceName,
             invoiceNumber: invoiceData.invoiceNumber,
-            invoiceDate: invoiceData.invoiceDate.toLocaleString(),
-            dueDate: invoiceData.dueDate.toLocaleString(),
+            invoiceDate: formatDateForSubmission(initialInvoiceDate),
+            dueDate: formatDateForSubmission(initialDueDate),
             currency: invoiceData.currency,
 
             from: {
@@ -62,8 +67,8 @@ export default function EditInvoice({ invoiceData } : {invoiceData: completeInvo
         }
     });
 
-    const [selectedDate, setSelectedDate] = useState<Date | undefined>(fields.invoiceDate.initialValue ? new Date(fields.invoiceDate.initialValue) : undefined);
-    const [dueDate, setDueDate] = useState<Date | undefined>(fields.dueDate.initialValue ? new Date(fields.dueDate.initialValue) : undefined);
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(initialInvoiceDate);
+    const [dueDate, setDueDate] = useState<Date | undefined>(initialDueDate);
 
     const [currency, setCurrency] = useState(fields.currency.initialValue ?? "");
 
@@ -79,7 +84,7 @@ export default function EditInvoice({ invoiceData } : {invoiceData: completeInvo
         return acc + (rate * quantity);
     }, 0);
 
-    const formatDate = (date?: Date) => date ? date.toLocaleDateString("en-CA") : "";
+    const formatDate = (date?: Date) => date && !isNaN(date.getTime()) ? date.toLocaleDateString("en-CA") : "";
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -97,6 +102,7 @@ export default function EditInvoice({ invoiceData } : {invoiceData: completeInvo
                                 <Input name={fields.invoiceName.name} defaultValue={fields.invoiceName.initialValue} key={fields.invoiceName.key} placeholder="Test 123" className="w-md" />
                                 <p className="text-red-500 text-sm">{fields.invoiceName.errors}</p>
                             </div>
+                            <input type="hidden" name="id" value={invoiceData.id}/>
                         </div>
 
                         <h2 className="font-bold mt-4">Invoice Details</h2>
