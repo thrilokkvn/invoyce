@@ -7,7 +7,7 @@ export function StatusBadge({text}: {text: string}) {
         case "PENDING":
             badgeStyling = "bg-yellow-100 text-yellow-400"
             break;
-        case "SUCCESS":
+        case "PAID":
             badgeStyling = "bg-green-100 text-green-400"
             break;
         default:
@@ -16,7 +16,7 @@ export function StatusBadge({text}: {text: string}) {
     }
 
     return (
-        <Badge className={`${badgeStyling}`}>
+        <Badge className={`${badgeStyling} font-semibold w-20 justify-center`}>
             {text[0]}{text.slice(1).toLowerCase()}
         </Badge>
     )

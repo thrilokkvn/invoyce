@@ -42,7 +42,7 @@ export default function InvoiceActions({ invoiceId }: {invoiceId : string}) {
                     <MailIcon /> Send Reminder Mail
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link href="">
+                    <Link href={`/dashboard/invoices/update/${invoiceId}`}>
                         <CheckCircleIcon /> Mark as Paid
                     </Link>
                 </DropdownMenuItem>
