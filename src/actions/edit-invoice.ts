@@ -64,13 +64,13 @@ export default async function editInvoice(prevState: any, data: FormData) {
         });
 
         const sender = {
-            email: "hello@demomailtrap.co",
-            name: "Mailtrap Test",
+            email: "hello@invoyce.in",
+            name: "Invoyce",
         };
 
         emailClient.send({
             from: sender,
-            to: [{email: process.env.EMAIL_ID!}],
+            to: [{email: submission.value.client.clientEmail}],
             template_uuid: process.env.EDIT_TEMPLATE_ID!,
             template_variables: {
                 "clientName": submission.value.client.clientName,

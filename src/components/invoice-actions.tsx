@@ -1,8 +1,27 @@
+"use client";
+
 import { CheckCircleIcon, DownloadCloud, Edit, Ellipsis, MailIcon, Trash } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import Link from "next/link";
+import { toast } from "sonner";
+import axios from 'axios'
 
 export default function InvoiceActions({ invoiceId }: {invoiceId : string}) {
+    const handleReminderEmail = () => {
+        console.log("Reminder")
+        toast.promise(
+            axios.post(`/api/remind/${invoiceId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }), {
+                loading: "Sending reminder mail...",
+                success: "Reminder Email sent successfully!",
+                error: "Failed to send Reminder email"
+            }
+        )
+    }
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className="cursor-pointer">
@@ -19,19 +38,17 @@ export default function InvoiceActions({ invoiceId }: {invoiceId : string}) {
                         <DownloadCloud /> Download Invoice
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href="">
-                        <MailIcon /> Reminder Mail
-                    </Link>
+                <DropdownMenuItem onClick={handleReminderEmail}>
+                    <MailIcon /> Send Reminder Mail
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href="">
                         <CheckCircleIcon /> Mark as Paid
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href="">
-                        <Trash /> Delete Invoice
+                <DropdownMenuItem className="text-red-400 hover:text-red-400" asChild>
+                    <Link href={`/dashboard/invoices/delete/${invoiceId}`}>
+                        <Trash className="text-red-400"/> Delete Invoice
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuContent>

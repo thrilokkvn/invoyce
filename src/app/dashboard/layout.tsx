@@ -3,6 +3,7 @@ import { DashboardLinks } from "@/components/dashboard-links";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Toaster } from "@/components/ui/sonner";
 import { signOut } from "@/config/auth";
 import { requireUser } from "@/hooks/require-user";
 import { FileText, MenuIcon, User2, Users2 } from "lucide-react";
@@ -82,6 +83,7 @@ export default async function DashboardLayout({children}: {children: ReactNode})
                     </main>
                 </div>
             </div>
+            <Toaster theme="light" richColors/>
         </>
     )
 }

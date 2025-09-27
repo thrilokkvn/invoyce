@@ -19,8 +19,8 @@ export async function createInvoice(prevState: any, data: FormData) {
     const totalAmount = submission.value.items.reduce((acc, item) => acc + item.amount, 0);
 
     const sender = {
-        email: "hello@demomailtrap.co",
-        name: "Mailtrap Test",
+        email: "hello@invoyce.in",
+        name: "Invoyce",
     };
 
     await prisma.$transaction(async (txn) => {
@@ -61,7 +61,7 @@ export async function createInvoice(prevState: any, data: FormData) {
 
         emailClient.send({
             from: sender,
-            to: [{email: process.env.EMAIL_ID!}],
+            to: [{email: submission.value.client.clientEmail}],
             template_uuid: process.env.TEMPLATE_ID!,
             template_variables: {
                 "clientName": submission.value.client.clientName,
