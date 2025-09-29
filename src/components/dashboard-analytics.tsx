@@ -88,8 +88,8 @@ export default async function DashboardAnalytics() {
                         <Card className="bg-white border border-gray-200 shadow-sm flex-1">
                             <CardHeader className="border-b border-gray-100 pb-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="h-8 w-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                        <DollarSign className="h-4 w-4 text-gray-600" />
+                                    <div className="h-8 w-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                        <DollarSign className="h-4 w-4 text-yellow-600" />
                                     </div>
                                     <CardTitle className="text-xl font-semibold text-gray-500">
                                         REVENUE BY CURRENCY
@@ -105,7 +105,7 @@ export default async function DashboardAnalytics() {
                                                 className="flex items-center justify-between p-3 rounded-lg border border-gray-100 bg-gray-50/50 hover:bg-gray-100/50 transition-colors duration-200"
                                             >
                                                 <div className="flex items-center gap-3">
-                                                    <div className="h-8 w-8 bg-green-100 border border-gray-200 rounded-lg flex items-center justify-center">
+                                                    <div className="h-8 w-8 bg-yellow-100 border border-gray-200 rounded-lg flex items-center justify-center">
                                                         <span className="text-xs font-semibold text-gray-700 uppercase">
                                                             {item.currency}
                                                         </span>
@@ -119,7 +119,7 @@ export default async function DashboardAnalytics() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="h-6 w-6 bg-green-100 text-green-700 rounded-md flex items-center justify-center">
+                                                <div className="h-6 w-6 bg-green-100 text-green-700 rounded-md font-bold flex items-center justify-center">
                                                     {formatCurrency(item.totalAmount, item.currency)[0]}
                                                 </div>
                                             </div>
