@@ -51,3 +51,12 @@ export interface completeInvoiceDataProps {
     userId: string,
     items: itemType[]
 }
+
+export interface clientType {
+    clientName: string,
+    clientEmail: string,
+    clientAddress: string,
+    clientCity: string,
+    clientCountry: string,
+    clientPostalCode: string
+}

@@ -11,7 +11,7 @@ import { ReactNode } from "react";
 
 export default async function DashboardLayout({children}: {children: ReactNode}) {
     const session = await requireUser();
-    const data = await checkUser(session.user?.id as string)
+    await checkUser(session.user?.id as string)
 
     return (
         <>
