@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, Search } from "lucide-react";
+import { MailIcon, Plus, Search } from "lucide-react";
 import { Input } from "./ui/input";
 import { useEffect, useState } from "react";
 import getClients from "@/actions/get-clients";
@@ -59,18 +59,35 @@ export default function ClientsComponent() {
                 <h1 className="text-xl font-semibold">No clients match your filters</h1>    
             </div>}
 
-            {filteredData.length > 0 && <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-7 my-5">
-                {clientsData.map((each, index) => (
-                    <Card key={index} className="border rounded-lg shadow-md p-4">
-                        <div className="space-y-3">
-                            <h3 className="text-xl font-semibold">{each.clientName}</h3>
-                            <p className="text-gray-600">{each.clientEmail}</p>
-                            <p className="text-sm text-gray-500">{each.clientAddress}</p>
-                            <p className="text-sm text-gray-500">{each.clientCity}, {each.clientCountry} {each.clientPostalCode}</p>
-                        </div>
-                    </Card>
-                ))}    
-            </div>}
+            {filteredData.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 my-6">
+                    {clientsData.map((each, index) => (
+                        <Card 
+                            key={index} 
+                            className="group border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-5 bg-white hover:border-gray-300">
+                            <div className="space-y-3">
+                                <h3 className="text-lg font-semibold text-gray-900 truncate">
+                                    {each.clientName}
+                                </h3>
+                        
+                                <div className="space-y-2 pt-1">
+                                    <p className="text-sm text-gray-600 truncate flex items-center gap-2">
+                                        <MailIcon className="h-4 w-4"/>
+                                        {each.clientEmail}
+                                    </p>
+                                    
+                                    <div className="text-sm text-gray-500 space-y-1 pt-2 border-t border-gray-100">
+                                        <p className="leading-relaxed">{each.clientAddress}</p>
+                                        <p className="font-medium text-gray-600">
+                                            {each.clientCity}, {each.clientCountry} {each.clientPostalCode}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+                    ))}    
+                </div>
+                )}
         </div>
     )
 }
