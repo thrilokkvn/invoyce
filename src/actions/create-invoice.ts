@@ -23,7 +23,7 @@ export async function createInvoice(prevState: any, data: FormData) {
         name: "Invoyce",
     };
 
-    await prisma.$transaction(async (txn) => {
+    await prisma.$transaction(async (txn: any) => {
         const invoice = await txn.invoice.create({
             data: {
                 invoiceName: submission.value.invoiceName,

@@ -18,7 +18,7 @@ export default async function editInvoice(prevState: any, data: FormData) {
 
     const totalAmount = submission.value.items.reduce((acc, item) => acc + item.amount, 0);
 
-    await prisma.$transaction(async (txn) => {
+    await prisma.$transaction(async (txn: any) => {
         const invoice = await txn.invoice.update({
             where: {
                 userId: session.user?.id,
