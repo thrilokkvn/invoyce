@@ -23,7 +23,7 @@ export default async function getInvoiceData(invoiceId: string, userId: string) 
         }
     });
 
-    const items = itemsData.map(item => ({
+    const items = itemsData.map((item: any) => ({
         id: item.id,
         invoiceId: item.invoiceId,
         itemNumber: item.itemNumber,
