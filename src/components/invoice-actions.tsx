@@ -4,10 +4,10 @@ import { CheckCircleIcon, DownloadCloud, Edit, Ellipsis, MailIcon, Trash } from 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import Link from "next/link";
 import { toast } from "sonner";
-import axios from 'axios'
-import { invoiceStatusType } from "@/types/types";
+import axios from 'axios';
+import { InvoiceStatus } from "@prisma/client";
 
-export default function InvoiceActions({ invoiceId, status }: {invoiceId : string, status: invoiceStatusType}) {
+export default function InvoiceActions({ invoiceId, status }: {invoiceId : string, status: InvoiceStatus}) {
     const handleReminderEmail = () => {
         toast.promise(
             axios.post(`/api/remind/${invoiceId}`, {
