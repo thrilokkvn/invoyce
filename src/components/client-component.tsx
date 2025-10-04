@@ -9,7 +9,7 @@ import { clientType } from "@/types/types";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
-import { FadeLoader } from "react-spinners"
+import { PuffLoader } from "react-spinners"
 
 export default function ClientsComponent() {
     const [clientsData, setClientsData] = useState<clientType[]>([]);
@@ -52,31 +52,34 @@ export default function ClientsComponent() {
     if (loading) {
         return (
              <div className="min-h-screen flex justify-center items-center">
-                <FadeLoader />
+                <PuffLoader />
             </div>
         )
     }
 
     return (
         <div>
-            <div className="mt-3 flex items-center relative">
+            {clientsData.length >0 && <div className="mt-3 flex items-center relative">
                 <Input type="search"
                     placeholder="Search your Clients" 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="p-5"/>
                 <Search className="absolute top-2 right-2 p-1"/>
-            </div>
+            </div>}
 
             {!loading && clientsData.length === 0 && <div className="flex flex-col gap-3 justify-center items-center my-5">
-                <h1 className="text-xl font-semibold">No clients yet!!</h1>
+                <h1 className="text-xl font-semibold text-gray-500">No clients yet!!</h1>
+                <p className="text-gray-500 mb-4 text-center">
+                    It looks like you don't have any clients. You can create your first invoice by clicking below.
+                </p>
                 <Button onClick={() => router.push("/dashboard/invoices/create")}>
                     <Plus /> Create Invoice    
                 </Button>    
             </div>}
 
             {!loading && clientsData.length > 0 && filteredData.length === 0 && <div className="flex flex-col gap-3 justify-center items-center my-5">
-                <h1 className="text-lg font-semibold">No clients match your filters</h1>    
+                <h1 className="text-lg font-semibold text-gray-500">No clients match your filters</h1>    
             </div>}
 
             {!loading && filteredData.length > 0 && (

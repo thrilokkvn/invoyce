@@ -1,4 +1,5 @@
-import { Prisma } from "@prisma/client"
+import { InvoiceStatus, Prisma } from "@prisma/client"
+import { Decimal } from "@prisma/client/runtime/library"
 
 export interface createInvoiceProps {
     firstName: string,
@@ -60,4 +61,14 @@ export interface clientType {
     clientCity: string,
     clientCountry: string,
     clientPostalCode: string
+}
+
+export interface invoicesDataType {
+    id: string,
+    invoiceNumber: number,
+    clientName: string,
+    totalAmount: Number,
+    status: InvoiceStatus,
+    createdAt: Date,
+    currency: string
 }

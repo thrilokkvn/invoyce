@@ -21,9 +21,13 @@ export async function onboardUser(prevState: any, formData: FormData) {
         data: {
             firstName: submission.value.firstName,
             lastName: submission.value.lastName,
-            address: submission.value.address
+            address: submission.value.address,
+            city: submission.value.city,
+            country: submission.value.country,
+            postalCode: submission.value.postalCode
         }
-    })
+    });
+    
 
     return redirect("/dashboard");
 }

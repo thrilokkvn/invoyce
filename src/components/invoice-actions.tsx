@@ -5,10 +5,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import Link from "next/link";
 import { toast } from "sonner";
 import axios from 'axios'
+import { InvoiceStatus } from "@prisma/client";
 
-export default function InvoiceActions({ invoiceId }: {invoiceId : string}) {
+export default function InvoiceActions({ invoiceId, status }: {invoiceId : string, status: InvoiceStatus}) {
     const handleReminderEmail = () => {
-        console.log("Reminder")
         toast.promise(
             axios.post(`/api/remind/${invoiceId}`, {
                 headers: {
@@ -28,24 +28,24 @@ export default function InvoiceActions({ invoiceId }: {invoiceId : string}) {
                 <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild>
+                {status === "PENDING" && <DropdownMenuItem asChild>
                     <Link href={`/dashboard/invoices/${invoiceId}`}>
                         <Edit /> Edit Invoice
                     </Link>
-                </DropdownMenuItem>
+                </DropdownMenuItem>}
                 <DropdownMenuItem asChild>
                     <Link href={`/api/invoice/${invoiceId}`} target="_blank">
                         <DownloadCloud /> Download Invoice
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleReminderEmail}>
+                {status === "PENDING" && <DropdownMenuItem onClick={handleReminderEmail}>
                     <MailIcon /> Send Reminder Mail
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
+                </DropdownMenuItem>}
+                {status === "PENDING" && <DropdownMenuItem asChild>
                     <Link href={`/dashboard/invoices/update/${invoiceId}`}>
                         <CheckCircleIcon /> Mark as Paid
                     </Link>
-                </DropdownMenuItem>
+                </DropdownMenuItem>}
                 <DropdownMenuItem className="text-red-400 hover:text-red-400" asChild>
                     <Link href={`/dashboard/invoices/delete/${invoiceId}`}>
                         <Trash className="text-red-400"/> Delete Invoice
