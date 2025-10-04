@@ -14,9 +14,12 @@ export async function getUserData(userId: string) {
             city: true,
             postalCode: true,
             country: true,
-            email: true
+            email: true,
+            createdAt: true
         }
     });
+
+    if (!data) return null;
 
     return data;
 }

@@ -11,11 +11,14 @@ export async function checkUser(userId: string) {
         select: {
             firstName: true,
             lastName: true,
-            address: true
+            address: true,
+            city: true,
+            country: true, 
+            postalCode: true
         }
     });
 
-    if (!data?.firstName || !data.lastName || !data.address) {
+    if (!data?.firstName || !data.lastName || !data.address || !data.city || !data.country || !data.postalCode) {
         redirect("/onboarding");
     }
 }

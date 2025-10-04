@@ -16,8 +16,6 @@ export async function POST(request: Request, {params}: {params: Promise<{invoice
             }
         });
 
-        console.log(invoiceData)
-
         if (!invoiceData) {
             console.log(invoiceData);
             return NextResponse.json({message: "Invoice not found"}, {status: 404});
