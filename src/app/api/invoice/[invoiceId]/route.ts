@@ -110,7 +110,7 @@ export async function GET(request: Request, {params}: {params: Promise<{invoiceI
     pdf.line(20, 100, 190, 100);
 
 
-    const tableData = itemsData.map(item => {
+    const tableData = itemsData.map((item: any) => {
         const rate = parseFloat(item.rate.toString());
         const itemTotal = item.quantity * rate;
 
