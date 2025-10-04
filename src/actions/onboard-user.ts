@@ -14,7 +14,7 @@ export async function onboardUser(prevState: any, formData: FormData) {
         return submission.reply();
     }
 
-    const data = await prisma.user.update({
+    await prisma.user.update({
         where: {
             id: session.user?.id
         },

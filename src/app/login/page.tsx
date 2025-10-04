@@ -30,7 +30,7 @@ export default async function Login() {
                     <Card className="border-0 shadow-xl shadow-gray-200/50 backdrop-blur">
                         <CardHeader className="space-y-1 pb-6">
                             <CardTitle className="text-2xl font-bold text-center">Sign In</CardTitle>
-                            <CardDescription className="text-center">We'll send you a verification link to your email</CardDescription>
+                            <CardDescription className="text-center">We&apos;ll send you a verification link to your email</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <form

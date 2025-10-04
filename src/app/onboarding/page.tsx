@@ -42,7 +42,7 @@ export default function Onboarding() {
                         </CardTitle>
                         <Separator className="my-2"/>
                         <CardTitle className="text-xl font-bold">
-                            You're almost there...
+                            You&apos;re almost there...
                         </CardTitle>
                         <CardDescription className="font-semibold text-gray-400">
                             Enter your information to get started

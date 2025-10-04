@@ -43,6 +43,7 @@ export async function POST(request: Request, {params}: {params: Promise<{invoice
 
         return NextResponse.json({message: "Reminder mail sent!!"}, {status: 200});
     } catch (e) {
+        console.log(e);
         return NextResponse.json({error: "Error sending mail"}, {status: 500})
     }
 }

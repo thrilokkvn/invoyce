@@ -32,12 +32,13 @@ const sidebarItems = [
         name: "Profile",
         href: "/dashboard/profile",
         icon: User,
-    }, {
-        id: 5,
-        name: "Help & Support",
-        href: "/dashboard/help",
-        icon: HelpCircle
-    }
+    }, 
+    // {
+    //     id: 5,
+    //     name: "Help & Support",
+    //     href: "/dashboard/help",
+    //     icon: HelpCircle
+    // }
 ]
 
 export function DashboardLinks() {

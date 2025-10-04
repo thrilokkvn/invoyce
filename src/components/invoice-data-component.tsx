@@ -37,7 +37,7 @@ export default function InvoiceDataComponent() {
                     setInvoiceData(invoiceData);
                 }
             } catch (err: any) {
-                toast.error("Failed to fetch invoices!");
+                toast.error(err.message || "Failed to fetch invoices!");
             } finally {
                 setLoading(false);
             }
@@ -94,7 +94,7 @@ export default function InvoiceDataComponent() {
             {!loading && invoiceData.length === 0 && <div className="flex flex-col gap-3 justify-center items-center my-5">
                 <h1 className="text-xl font-semibold text-gray-500">No Invoices yet!!</h1>
                 <p className="text-gray-500 mb-4 text-center">
-                    It looks like you don't have any Invoices. You can create your first invoice by clicking below.
+                    It looks like you don&apos;t have any Invoices. You can create your first invoice by clicking below.
                 </p>
                 <Button onClick={() => router.push("/dashboard/invoices/create")}>
                     <Plus /> Create Invoice    
