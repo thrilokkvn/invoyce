@@ -81,7 +81,9 @@ export default async function editInvoice(prevState: any, data: FormData) {
                     "dueDate": submission.value.dueDate,
                     "amount": formatCurrency(submission.value.totalAmount, submission.value.currency),
                     "fromName": submission.value.from.fromName,
-                    "invoiceLink": `http://localhost:3000/api/invoice/${invoice.id}`
+                    "invoiceLink": process.env.NODE_ENV !== "production" ?
+                    `http://localhost:3000/api/invoice/${invoice.id}` : 
+                    `https://app.invoyce.in/api/invoice/${invoice.id}`
                 }
             });
         }

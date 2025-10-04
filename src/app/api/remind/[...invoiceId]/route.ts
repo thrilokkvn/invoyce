@@ -37,7 +37,9 @@ export async function POST(request: Request, {params}: {params: Promise<{invoice
                 "dueDate": invoiceData.dueDate.toLocaleDateString(),
                 "amount": formatCurrency(Number(invoiceData.totalAmount), invoiceData.currency),
                 "fromName": invoiceData.fromName,
-                "invoiceLink": `http://localhost:3000/api/invoice/${invoiceId}`
+                "invoiceLink": process.env.NODE_ENV !== "production" ?
+                    `http://localhost:3000/api/invoice/${invoiceId}` : 
+                    `https://app.invoyce.in/api/invoice/${invoiceId}`
             }
         });
 
