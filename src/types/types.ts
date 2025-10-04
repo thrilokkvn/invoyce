@@ -67,3 +67,5 @@ export interface invoicesDataType {
     createdAt: Date,
     currency: string
 }
+
+export type invoiceStatusType = "PAID" | "PENDING";

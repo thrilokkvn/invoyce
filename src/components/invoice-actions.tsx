@@ -5,9 +5,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import Link from "next/link";
 import { toast } from "sonner";
 import axios from 'axios'
-import { InvoiceStatus } from "@prisma/client";
+import { invoiceStatusType } from "@/types/types";
 
-export default function InvoiceActions({ invoiceId, status }: {invoiceId : string, status: InvoiceStatus}) {
+export default function InvoiceActions({ invoiceId, status }: {invoiceId : string, status: invoiceStatusType}) {
     const handleReminderEmail = () => {
         toast.promise(
             axios.post(`/api/remind/${invoiceId}`, {
