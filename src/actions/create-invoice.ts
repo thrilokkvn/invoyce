@@ -31,6 +31,7 @@ export async function createInvoice(prevState: any, data: FormData) {
                 invoiceDate: new Date(submission.value.invoiceDate),
                 dueDate: new Date(submission.value.dueDate),
                 currency: submission.value.currency,
+                sendMail: submission.value.sendMail === 'true',
                 fromName: submission.value.from.fromName,
                 fromEmail: submission.value.from.fromEmail,
                 fromAddress: submission.value.from.fromAddress,
@@ -59,20 +60,22 @@ export async function createInvoice(prevState: any, data: FormData) {
             }))
         })
 
-        emailClient.send({
-            from: sender,
-            to: [{email: submission.value.client.clientEmail}],
-            template_uuid: process.env.TEMPLATE_ID!,
-            template_variables: {
-                "clientName": submission.value.client.clientName,
-                "invoiceNumber": `INV-${submission.value.invoiceNumber}`,
-                "invoiceDate": submission.value.invoiceDate,
-                "dueDate": submission.value.dueDate,
-                "amount": formatCurrency(submission.value.totalAmount, submission.value.currency),
-                "fromName": submission.value.from.fromName,
-                "invoiceLink": `http://localhost:3000/api/invoice/${invoice.id}`
-            }
-        });
+        if (submission.value.sendMail === 'true') {
+            emailClient.send({
+                from: sender,
+                to: [{email: submission.value.client.clientEmail}],
+                template_uuid: process.env.TEMPLATE_ID!,
+                template_variables: {
+                    "clientName": submission.value.client.clientName,
+                    "invoiceNumber": `INV-${submission.value.invoiceNumber}`,
+                    "invoiceDate": submission.value.invoiceDate,
+                    "dueDate": submission.value.dueDate,
+                    "amount": formatCurrency(submission.value.totalAmount, submission.value.currency),
+                    "fromName": submission.value.from.fromName,
+                    "invoiceLink": `http://localhost:3000/api/invoice/${invoice.id}`
+                }
+            });
+        }
     });
 
     return redirect("/dashboard/invoices");

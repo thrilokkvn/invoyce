@@ -20,6 +20,7 @@ import formatCurrency from "@/hooks/format-currency";
 import { completeInvoiceDataProps } from "@/types/types"
 import editInvoice from "@/actions/edit-invoice";
 import { formatDateForSubmission, safeParseDate } from "@/hooks/parse-date";
+import { Checkbox } from "./ui/checkbox";
 
 export default function EditInvoice({ invoiceData } : {invoiceData: completeInvoiceDataProps}) {
     const [lastResult, action] = useActionState(editInvoice, undefined);
@@ -41,6 +42,8 @@ export default function EditInvoice({ invoiceData } : {invoiceData: completeInvo
             invoiceDate: formatDateForSubmission(initialInvoiceDate),
             dueDate: formatDateForSubmission(initialDueDate),
             currency: invoiceData.currency,
+
+            sendMail: invoiceData.sendMail ? "true" : "false",
 
             from: {
                 fromName: invoiceData.fromName,
@@ -186,10 +189,16 @@ export default function EditInvoice({ invoiceData } : {invoiceData: completeInvo
                                     <Input name={fields.from.getFieldset().fromName.name} defaultValue={fields.from.getFieldset().fromName.initialValue} key={fields.from.getFieldset().fromName.key} placeholder="Your Name or Company Name" />
                                     <p className="text-red-500 text-sm">{fields.from.getFieldset().fromName.errors}</p>
                                 </div>
-                                <div className="space-y-2 mb-2">
-                                    <Label>Email</Label>
-                                    <Input name={fields.from.getFieldset().fromEmail.name} defaultValue={fields.from.getFieldset().fromEmail.initialValue} key={fields.from.getFieldset().fromEmail.key} placeholder="Your Email" />
-                                    <p className="text-red-500 text-sm">{fields.from.getFieldset().fromEmail.errors}</p>
+                                <div className="flex flex-col justify-start">
+                                    <div className="space-y-2 mb-2">
+                                        <Label>Email</Label>
+                                        <Input name={fields.from.getFieldset().fromEmail.name} defaultValue={fields.from.getFieldset().fromEmail.initialValue} key={fields.from.getFieldset().fromEmail.key} placeholder="Your Email" />
+                                        <p className="text-red-500 text-sm">{fields.from.getFieldset().fromEmail.errors}</p>
+                                    </div>
+                                    <div className="invisible flex items-center gap-2 mb-2">
+                                        <Checkbox />
+                                        <Label>Send mail to client</Label>
+                                    </div>
                                 </div>
                                 <div className="space-y-2 mb-2">
                                     <Label>Address</Label>
@@ -222,10 +231,16 @@ export default function EditInvoice({ invoiceData } : {invoiceData: completeInvo
                                     <Input name={fields.client.getFieldset().clientName.name} defaultValue={fields.client.getFieldset().clientName.initialValue} key={fields.client.getFieldset().clientName.key} placeholder="Your Name or Company Name" />
                                     <p className="text-red-500 text-sm">{fields.client.getFieldset().clientName.errors}</p>
                                 </div>
-                                <div className="space-y-2 mb-2">
-                                    <Label>Email</Label>
-                                    <Input name={fields.client.getFieldset().clientEmail.name} defaultValue={fields.client.getFieldset().clientEmail.initialValue} key={fields.client.getFieldset().clientEmail.key} placeholder="Your Email" />
-                                    <p className="text-red-500 text-sm">{fields.client.getFieldset().clientEmail.errors}</p>
+                                <div className="flex flex-col justify-start">
+                                    <div className="space-y-2 mb-1">
+                                        <Label>Email</Label>
+                                        <Input name={fields.client.getFieldset().clientEmail.name} defaultValue={fields.client.getFieldset().clientEmail.initialValue} key={fields.client.getFieldset().clientEmail.key} placeholder="Your Email" />
+                                        <p className="text-red-500 text-sm">{fields.client.getFieldset().clientEmail.errors}</p>
+                                    </div>
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <Checkbox name={fields.sendMail.name} key={fields.sendMail.key} defaultChecked={fields.sendMail.initialValue === "true"} value="true"/>
+                                        <Label>Send mail to client</Label>
+                                    </div>
                                 </div>
                                 <div className="space-y-2 mb-2">
                                     <Label>Address</Label>

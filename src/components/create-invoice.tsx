@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Calendar } from "./ui/calendar";
 import { useActionState, useState } from "react";
 import { createInvoice } from "@/actions/create-invoice";
-import { useForm, getFormProps } from "@conform-to/react";
+import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { invoiceSchema } from "@/schema/invoice-schema";
 import { Separator } from "./ui/separator";
@@ -19,14 +19,15 @@ import { Textarea } from "./ui/textarea";
 import { SubmitButton } from "./submit-button";
 import formatCurrency from "@/hooks/format-currency";
 import { createInvoiceProps } from "@/types/types";
+import { Checkbox } from "./ui/checkbox";
 
 export default function CreateInvoice({firstName, lastName, email, address, city, postalCode, country}: createInvoiceProps) {
     const [lastResult, action] = useActionState(createInvoice, undefined);
     const [form, fields] = useForm({
         lastResult,
         onValidate({ formData }) {
-            console.log("Form data: ", formData)
-            return parseWithZod(formData, { schema: invoiceSchema })
+            const result =  parseWithZod(formData, { schema: invoiceSchema });
+            return result;
         },
         shouldValidate: "onBlur",
         shouldRevalidate: "onInput",
@@ -36,6 +37,8 @@ export default function CreateInvoice({firstName, lastName, email, address, city
             invoiceDate: "",
             dueDate: "",
             currency: "INR",
+
+            sendMail: "true",
 
             from: {
                 fromName: `${firstName} ${lastName}`,
@@ -182,10 +185,16 @@ export default function CreateInvoice({firstName, lastName, email, address, city
                                     <Input name={fields.from.getFieldset().fromName.name} defaultValue={fields.from.getFieldset().fromName.initialValue} key={fields.from.getFieldset().fromName.key} placeholder="Your Name or Company Name" />
                                     <p className="text-red-500 text-sm">{fields.from.getFieldset().fromName.errors}</p>
                                 </div>
-                                <div className="space-y-2 mb-2">
-                                    <Label>Email</Label>
-                                    <Input name={fields.from.getFieldset().fromEmail.name} defaultValue={fields.from.getFieldset().fromEmail.initialValue} key={fields.from.getFieldset().fromEmail.key} placeholder="Your Email" />
-                                    <p className="text-red-500 text-sm">{fields.from.getFieldset().fromEmail.errors}</p>
+                                <div className="flex flex-col justify-start">
+                                    <div className="space-y-2 mb-2">
+                                        <Label>Email</Label>
+                                        <Input name={fields.from.getFieldset().fromEmail.name} defaultValue={fields.from.getFieldset().fromEmail.initialValue} key={fields.from.getFieldset().fromEmail.key} placeholder="Your Email" />
+                                        <p className="text-red-500 text-sm">{fields.from.getFieldset().fromEmail.errors}</p>
+                                    </div>
+                                    <div className="invisible flex items-center gap-2 mb-2">
+                                        <Checkbox />
+                                        <Label>Send mail to client</Label>
+                                    </div>
                                 </div>
                                 <div className="space-y-2 mb-2">
                                     <Label>Address</Label>
@@ -218,10 +227,16 @@ export default function CreateInvoice({firstName, lastName, email, address, city
                                     <Input name={fields.client.getFieldset().clientName.name} defaultValue={fields.client.getFieldset().clientName.initialValue} key={fields.client.getFieldset().clientName.key} placeholder="Your Name or Company Name" />
                                     <p className="text-red-500 text-sm">{fields.client.getFieldset().clientName.errors}</p>
                                 </div>
-                                <div className="space-y-2 mb-2">
-                                    <Label>Email</Label>
-                                    <Input name={fields.client.getFieldset().clientEmail.name} defaultValue={fields.client.getFieldset().clientEmail.initialValue} key={fields.client.getFieldset().clientEmail.key} placeholder="Your Email" />
-                                    <p className="text-red-500 text-sm">{fields.client.getFieldset().clientEmail.errors}</p>
+                                <div className="flex flex-col justify-start">
+                                    <div className="space-y-2 mb-1">
+                                        <Label>Email</Label>
+                                        <Input name={fields.client.getFieldset().clientEmail.name} defaultValue={fields.client.getFieldset().clientEmail.initialValue} key={fields.client.getFieldset().clientEmail.key} placeholder="Your Email" />
+                                        <p className="text-red-500 text-sm">{fields.client.getFieldset().clientEmail.errors}</p>
+                                    </div>
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <Checkbox name={fields.sendMail.name} key={fields.sendMail.key} defaultChecked={fields.sendMail.initialValue === "true"} value="true"/>
+                                        <Label>Send mail to client</Label>
+                                    </div>
                                 </div>
                                 <div className="space-y-2 mb-2">
                                     <Label>Address</Label>

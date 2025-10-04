@@ -8,6 +8,8 @@ export const invoiceSchema = z.object({
     dueDate: z.string().min(1, "Due date is required"),
     currency: z.string().min(1, "Currency is required"),
 
+    sendMail: z.preprocess((val) => (val === "true" ? "true" : "false"), z.enum(["true", "false"])),
+
     from : z.object({
         fromName: z.string().min(3, "From name is required"),
         fromEmail: z.string().email("Invalid email").min(1, "From email is required"),

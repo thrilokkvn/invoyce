@@ -31,6 +31,7 @@ export interface completeInvoiceDataProps {
     invoiceDate: Date,
     dueDate: Date,
     currency: string,
+    sendMail: boolean,
     status: "PAID" | "PENDING",
     fromName: string,
     fromEmail: string,

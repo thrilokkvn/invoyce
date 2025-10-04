@@ -99,6 +99,8 @@ model Invoice {
   currency      String
   status        InvoiceStatus @default(PENDING)
 
+  sendMail         Boolean       @default(false)
+
   fromName         String
   fromEmail        String
   fromAddress      String

@@ -1,7 +1,5 @@
 import ClientsComponent from "@/components/client-component";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 
 export default async function Clients() {
     return (
