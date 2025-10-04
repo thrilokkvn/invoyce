@@ -123,7 +123,7 @@ export async function GET(request: Request, {params}: {params: Promise<{invoiceI
     });
 
     let subtotal = 0;
-    itemsData.forEach(item => {
+    itemsData.forEach((item: any) => {
         const rate = parseFloat(item.rate.toString());
         subtotal += item.quantity * rate;
     });
