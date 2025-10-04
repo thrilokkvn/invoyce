@@ -1,7 +1,6 @@
-import { deleteInvoice } from "@/actions/delete-invoice";
 import markAsPaid from "@/actions/mark-as-paid";
 import { SubmitButton } from "@/components/submit-button";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import prisma from "@/config/prisma";
 import formatCurrency from "@/hooks/format-currency";

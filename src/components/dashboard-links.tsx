@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { FileText, HelpCircle, HomeIcon, LayoutDashboard, LineChart, User, Users2 } from "lucide-react";
+import { FileText, HelpCircle, HomeIcon, LayoutDashboard, User, Users2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
