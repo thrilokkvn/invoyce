@@ -10,10 +10,6 @@ export interface createInvoiceProps {
     country: string
 }
 
-export interface invoiceDataType {
-    data: Prisma.InvoiceGetPayload<{}>
-}
-
 export interface itemType {
     id: number,
     invoiceId: string,
