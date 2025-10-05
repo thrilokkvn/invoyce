@@ -20,6 +20,7 @@ import { SubmitButton } from "./submit-button";
 import formatCurrency from "@/hooks/format-currency";
 import { createInvoiceProps } from "@/types/types";
 import { Checkbox } from "./ui/checkbox";
+import { toast } from "sonner";
 
 export default function CreateInvoice({firstName, lastName, email, address, city, postalCode, country}: createInvoiceProps) {
     const [lastResult, action] = useActionState(createInvoice, undefined);
@@ -27,6 +28,21 @@ export default function CreateInvoice({firstName, lastName, email, address, city
         lastResult,
         onValidate({ formData }) {
             const result =  parseWithZod(formData, { schema: invoiceSchema });
+
+            if (result.status === "error") {
+                const errorMessage = result.error ? Object.values(result.error).flat().filter(Boolean).join(", ") : "Error creating Invoice";
+
+                toast.error(errorMessage);
+            }
+
+            if (result.status === "success") {
+                toast.success(`Invoice INV-${fields.invoiceNumber.value} has been created successfully`,
+                    {
+                        description: fields.sendMail.value === "true" ? `Email sent to client ${fields.client.getFieldset().clientEmail.value}` : ""
+                    }
+                )
+            }
+
             return result;
         },
         shouldValidate: "onBlur",

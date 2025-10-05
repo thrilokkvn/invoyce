@@ -110,7 +110,7 @@ export async function GET(request: Request, {params}: {params: Promise<{invoiceI
     pdf.line(20, 100, 190, 100);
 
 
-    const tableData = itemsData.map((item: any) => {
+    const tableData = itemsData.map((item) => {
         const rate = parseFloat(item.rate.toString());
         const itemTotal = item.quantity * rate;
 
@@ -123,7 +123,7 @@ export async function GET(request: Request, {params}: {params: Promise<{invoiceI
     });
 
     let subtotal = 0;
-    itemsData.forEach((item: any) => {
+    itemsData.forEach((item) => {
         const rate = parseFloat(item.rate.toString());
         subtotal += item.quantity * rate;
     });

@@ -21,6 +21,7 @@ import { completeInvoiceDataProps } from "@/types/types"
 import editInvoice from "@/actions/edit-invoice";
 import { formatDateForSubmission, safeParseDate } from "@/hooks/parse-date";
 import { Checkbox } from "./ui/checkbox";
+import { toast } from "sonner";
 
 export default function EditInvoice({ invoiceData } : {invoiceData: completeInvoiceDataProps}) {
     const [lastResult, action] = useActionState(editInvoice, undefined);
@@ -31,8 +32,23 @@ export default function EditInvoice({ invoiceData } : {invoiceData: completeInvo
     const [form, fields] = useForm({
         lastResult,
         onValidate({ formData }) {
-            console.log("Form data: ", formData)
-            return parseWithZod(formData, { schema: invoiceSchema })
+            const result =  parseWithZod(formData, { schema: invoiceSchema });
+
+            if (result.status === "error") {
+                const errorMessage = result.error ? Object.values(result.error).flat().filter(Boolean).join(", ") : "Error updating Invoice";
+
+                toast.error(errorMessage);
+            }
+
+            if (result.status === "success") {
+                toast.success(`Invoice INV-${fields.invoiceNumber.value} has been updated successfully`,
+                    {
+                        description: fields.sendMail.value === "true" ? `Email sent to client ${fields.client.getFieldset().clientEmail.value}` : ""
+                    }
+                )
+            }
+
+            return result;
         },
         shouldValidate: "onBlur",
         shouldRevalidate: "onInput",

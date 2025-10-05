@@ -24,7 +24,7 @@ export async function getInvoices() {
         }
     });
 
-    return invoiceData.map((invoice: any) => ({
+    return invoiceData.map((invoice) => ({
         ...invoice,
         totalAmount: invoice.totalAmount.toNumber(),
     }));

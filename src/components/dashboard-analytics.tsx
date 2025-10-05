@@ -6,7 +6,7 @@ import formatCurrency from "@/hooks/format-currency";
 export default async function DashboardAnalytics() {
     const {amountData, openInvoices, paidInvoices} = await getDashboardData();
 
-    const processedData = amountData.reduce((acc:any, item: any) => {
+    const processedData = amountData.reduce((acc:any, item) => {
         const existing = acc.find((each : any) => each.currency === item.currency);
         if (existing) {
             existing.totalAmount = Number(existing.totalAmount) + Number(item.totalAmount);
